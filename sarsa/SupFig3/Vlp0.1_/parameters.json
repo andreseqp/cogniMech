@@ -1,0 +1,23 @@
+{
+  "totRounds": 20000,
+  "ResReward": 1,
+  "VisReward": 1,
+  "ResProb": 0.2,
+  "VisProb": 0.2,
+  "ResProbLeav": 0,
+  "VisProbLeav": 0.1,
+  "negativeRew": -0.5,
+  "experiment": false,
+  "inbr": 0,
+  "outbr": 0,
+  "trainingRep": 30,
+  "forRat": 0,
+  "alphaT": 0.01,
+  "printGen": 1,
+  "seed": 1,
+  "gammaRange": [0, 0.8],
+  "tauRange": 1,
+  "netaRange": [0, 1],
+  "alphaThRange": 0.01,
+  "folder": "/SupFig3/Vlp0.1_/"
+}
