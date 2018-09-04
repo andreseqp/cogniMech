@@ -10,12 +10,12 @@ simsDir<-"s:/quinonesa/Simulations/actCrit/"
 # libraries ---------------------------------------------------------------------------------------
 
 # external file to locate plots in the plotting region
-source('d:/quinonesa/Dropbox/R_files/posPlots.R')
+source('posPlots.R')
 
 # aesthetic parameters 
-source(paste(projDir,"aesth_par.R",sep=""))
+source("aesth_par.R")
 # funtions to load data
-source(paste(projDir,"loadData.R",sep = ""))
+source("loadData.R")
 library('plotrix')
 
 # Load Data ---------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ setwd(simsDir)
 
 # Define data to be loaded 
 
-(listPar<-c("BaseLine","BaselineExp"))
+(listPar<-c("ecol","exper"))
 (listVal<-c("",""))
 (param<-getParam(simsDir,listparam = listPar,values = listVal))
 
@@ -98,7 +98,7 @@ PAAIntstatsExp[,posit:=ifelse(Gamma==0&Neta==0,0,
 
 # Plot the dynamics of VR choice -----------------------------------------------------------
 
-# png("d:/quinonesa/Dropbox/Neuchatel/Figs/Actor_critic/Fig_base_exp.png",
+# png("/actCrit/Fig2/Fig_2.png",
     # width = 1200,height = 800)
 
 par(plt=posPlot(numplotx = 2,numploty = 2,idplotx = 1,idploty = 2),
@@ -180,7 +180,6 @@ with(PAAIntstatsExp,{
   axis(1,labels = (Interv+1)*1000,at=Interv+1)
 })
 text(x = 0,y=0.28,labels = "Trials",cex=2)
-# png(filename = paste(projDir,eval(extpar),".png",sep=""))
 
 # dev.off()
 

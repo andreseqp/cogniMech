@@ -33,7 +33,7 @@ inside the corresponding folder. So, for instance, to run the simulations
 presented in figure 2 one must compile an executable named "ActCrit.exe"; and 
 run it with parameters for figure 2, like this
 .\ActCrit.exe .\Fig2\ecol\parameters.json
-.\ActCrit.exe .\Fig2\evol\parameters.json
+.\ActCrit.exe .\Fig2\exper\parameters.json
 
 
 

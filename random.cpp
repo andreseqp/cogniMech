@@ -19,11 +19,10 @@
 
 =============================================================================================================*/
 
-#include "stdafx.h"
 #include <chrono>
 #include <sstream>
 #include <iomanip>
-#include "M:\\Routines\\C++\\RandomNumbers\\random.h"
+#include "..\\random.h"
 
 namespace rnd {
     std::mt19937 rng;

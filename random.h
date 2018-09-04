@@ -24,7 +24,7 @@
 
 #include <random>
 #include <vector>
-#include "M:\\Routines\\C++\\RandomNumbers\\utils.h"
+#include "..\\utils.h"
 
 namespace rnd
 {

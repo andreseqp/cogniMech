@@ -40,9 +40,9 @@ Start date:
 #include <iostream>
 #include <fstream>
 #include "tchar.h"
-#include "M:\\Routines\\C++\\RandomNumbers\\random.h"
+#include "..\\random.h"
 //H for house pc, E for laptop, M for office
-#include "D:\\quinonesa\\Dropbox\C++\\json.hpp"       
+#include "..\\json.hpp"       
 // Header for reading and using JSON files see https://github.com/nlohmann/json
 
 
@@ -346,8 +346,7 @@ void agent::update(){
 }
 
 void agent::printIndData(ofstream &learnSeries, int &seed, double &outbr, 
-	double pV, double pR)
-{
+	double pV, double pR) {
 	learnSeries << seed << '\t' << age << '\t';
 	//cout << seed << '\t' << age << '\t';
 	learnSeries << alpha << '\t' << gamma << '\t' << tau << '\t';

@@ -24,7 +24,7 @@
 #include <sstream>
 #include <chrono>
 #include <ctime>
-#include "M:\\Routines\\C++\\RandomNumbers\\utils.h"
+#include "..\\utils.h"
 #pragma warning(disable : 4996)
 
 
