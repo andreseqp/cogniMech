@@ -3,14 +3,18 @@
 
 # Directories --------------------------------------------------------------
 
-projDir<-"d:/quinonesa/learning_models_c++/actCrit/"
-simsDir<-"s:/quinonesa/Simulations/actCrit/"
+# directory where source files are saved
+projDir<-getwd()
+alg<-"ActCrit"
+# directory where simulation output is stored
+simsDir<-paste(projDir,alg,sep = "/")
 
 
 # libraries ----------------------------------------------------------------
-source('d:/quinonesa/Dropbox/R_files/posPlots.R')
+setwd(projDir)
+source(paste(projDir,'posPlots.R'))
 source(paste(projDir,"aesth_par.R",sep=""))
-source(paste(projDir,"loadData.R",sep = ""))
+source(paste(projDir,"loadData_",alg,".R",sep = ""))
 library('plotrix')
 # library('lme4')
 
@@ -20,29 +24,17 @@ library('plotrix')
 setwd(simsDir)
 # Define data to be loaded 
 
-(listPar<-c("LeavingP"))
+(listPar<-rep("Vlp",6))
 
-(listVal<-c(""))
+(listVal<-seq(0,1,length=6))
 
 FAAlastQuart<-do.call(rbind,lapply(
-  getFilelist(simsDir,listPar,listVal)$FIA,file2lastProp,0.75,'Vlp'))
+  getFilelist(simsDir,listPar,listVal)$FAA,file2lastProp,0.75,'Vlp'))
 
 FAA.stats<-FAAlastQuart[,.(meanProb=mean(Prob.RV.V),
                               upIQR=fivenum(Prob.RV.V)[4],
                               lowIQR=fivenum(Prob.RV.V)[2])
                            ,by=.(Neta,Gamma,pR,pV,Outbr,Vlp)]
-
-
-FAAraw<-loadRawData(simsDir,"FIA",listparam = listPar,values = listVal)
-param<-getParam(simsDir,listparam = listPar,values = listVal)
-
-
-FAAagg<-FAAraw[, as.list(unlist(lapply(.SD, function(x) 
-  list(mean = mean(x),IQ.h = fivenum(x)[4],IQ.l=fivenum(x)[2])))),
-  by=.(Age,Alpha,Gamma,Tau,Neta,Outbr,pR,pV), 
-  .SDcols=c('ThetaV','ThetaR','RV','VV','RR','R0','V0','00_')]
-
-setnames(FAAagg,'get',extpar)
 
 
 # Plots -----------------------------------------------------------------------
@@ -51,8 +43,8 @@ FAA.stats[,posit:=ifelse(Gamma==0&Neta==0,0,
                          ifelse(Gamma==0.8&Neta==0,0.01,
                                 ifelse(Gamma==0&Neta==1,0.02,0.03)))]
 
-png("d:/quinonesa/Dropbox/Neuchatel/Figs/Actor_critic/Fig3.png",width = 1200,
-    height = 1200)
+png(paste(simsDir,"/Fig3/Fig_3.png",sep = ""),
+    width = 1200,height = 800)
 
 par(plt=posPlot(),las=1)
 with(FAA.stats,{

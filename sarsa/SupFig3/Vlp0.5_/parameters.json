@@ -19,5 +19,5 @@
   "tauRange": 1,
   "netaRange": [0, 1],
   "alphaThRange": 0.01,
-  "folder": "/SupFig3/Vlp0.5_/"
+  "folder": "./SupFig3/Vlp0.5_/"
 }

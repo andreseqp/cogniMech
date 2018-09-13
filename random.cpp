@@ -22,7 +22,7 @@
 #include <chrono>
 #include <sstream>
 #include <iomanip>
-#include "..\\random.h"
+#include "random.h"
 
 namespace rnd {
     std::mt19937 rng;

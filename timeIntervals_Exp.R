@@ -1,21 +1,21 @@
 # ----Comparison of time intervals for experimental and natural setting------------------------------------------#
 #                         Figure 2
 
-
 # directory where source files are saved
-projDir<-"d:/quinonesa/learning_models_c++/actCrit/"
+projDir<-getwd()
+alg<-"ActCrit"
 # directory where simulation output is stored
-simsDir<-"s:/quinonesa/Simulations/actCrit/"
+simsDir<-paste(projDir,alg,sep = "/")
 
 # libraries ---------------------------------------------------------------------------------------
-
+setwd(projDir)
 # external file to locate plots in the plotting region
 source('posPlots.R')
 
 # aesthetic parameters 
 source("aesth_par.R")
 # funtions to load data
-source("loadData.R")
+source(paste(projDir,"loadData_",alg,".R",sep = ""))
 library('plotrix')
 
 # Load Data ---------------------------------------------------------------------------------------
@@ -26,19 +26,18 @@ setwd(simsDir)
 
 (listPar<-c("ecol","exper"))
 (listVal<-c("",""))
-(param<-getParam(simsDir,listparam = listPar,values = listVal))
 
 
 # Load interval data for FAA from the raw data
 # natural setting
 FAAtimeIntEcol<-do.call(
   rbind,lapply(
-    getFilelist(simsDir,listPar[1],listVal[1])$FIA,
+    getFilelist(simsDir,listPar[1],listVal[1])$FAA,
     file2timeInter,interV=1001))
 #experimental setting
 FAAtimeIntExp<-do.call(
   rbind,lapply(
-    getFilelist(simsDir,listPar[2],listVal[2])$FIA,
+    getFilelist(simsDir,listPar[2],listVal[2])$FAA,
     file2timeInter,interV=1001))
 
 
@@ -46,13 +45,13 @@ FAAtimeIntExp<-do.call(
 # natural setting
 PAAtimeIntEcol<-do.call(
   rbind,lapply(
-    getFilelist(simsDir,listPar[1],listVal[1])$PIA,
+    getFilelist(simsDir,listPar[1],listVal[1])$PAA,
     file2timeInter,interV=1001))
 
 #experimental setting
 PAAtimeIntExp<-do.call(
   rbind,lapply(
-    getFilelist(simsDir,listPar[2],listVal[2])$PIA,
+    getFilelist(simsDir,listPar[2],listVal[2])$PAA,
     file2timeInter,interV=1001))
 
 # Calculate statistics on the interval data ------------------------------------
@@ -98,8 +97,8 @@ PAAIntstatsExp[,posit:=ifelse(Gamma==0&Neta==0,0,
 
 # Plot the dynamics of VR choice -----------------------------------------------------------
 
-# png("/actCrit/Fig2/Fig_2.png",
-    # width = 1200,height = 800)
+png(paste(simsDir,"Fig_2.png",sep = ""),
+width = 1200,height = 800)
 
 par(plt=posPlot(numplotx = 2,numploty = 2,idplotx = 1,idploty = 2),
     yaxt='s',las=1)
@@ -111,7 +110,7 @@ with(FAAIntstatsEcol,{
                              ifelse(Neta==1,1,2),
                              ifelse(Neta==1,3,4))],
          sfrac=0.002,cex.axis=1.3,ylim=c(0.4,1))
-  lines(x=c(0,max(Interv)),y=c(0.5,0.5),col='grey')
+  lines(x=c(min(Interv)+1,max(Interv)+1),y=c(0.5,0.5),col='grey')
   text(x=par('usr')[1]+0.05*(par('usr')[2]-par('usr')[1]),
        y=par('usr')[3]+0.9*(par('usr')[4]-par('usr')[3]),
        labels='A',cex=1.5)
@@ -130,7 +129,7 @@ with(PAAIntstatsEcol,{
                              ifelse(Neta==1,1,2),
                              ifelse(Neta==1,3,4))],
          sfrac=0.002,cex.axis=1.3,yaxt='n',ylim=c(0.4,1))
-  lines(x=c(0,max(Interv)),y=c(0.5,0.5),col='grey')
+  lines(x=c(min(Interv)+1,max(Interv)+1),y=c(0.5,0.5),col='grey')
   text(x=par('usr')[1]+0.05*(par('usr')[2]-par('usr')[1]),
        y=par('usr')[3]+0.9*(par('usr')[4]-par('usr')[3]),
        labels='B',cex=1.5)
@@ -151,7 +150,7 @@ with(FAAIntstatsExp,{
                              ifelse(Neta==1,1,2),
                              ifelse(Neta==1,3,4))],
          sfrac=0.002,cex.axis=1.3,ylim=c(0.4,1))
-    lines(x=c(0,max(Interv)),y=c(0.5,0.5),col='grey')
+    lines(x=c(min(Interv)+1,max(Interv)+1),y=c(0.5,0.5),col='grey')
   text(x=par('usr')[1]+0.05*(par('usr')[2]-par('usr')[1]),
        y=par('usr')[3]+0.9*(par('usr')[4]-par('usr')[3]),
        labels='C',cex=1.5)
@@ -173,7 +172,7 @@ with(PAAIntstatsExp,{
                              ifelse(Neta==1,1,2),
                              ifelse(Neta==1,3,4))],
          sfrac=0.002,cex.axis=1.3,yaxt='n',ylim=c(0.4,1))
-  lines(x=c(0,max(Interv)),y=c(0.5,0.5),col='grey')
+  lines(x=c(min(Interv)+1,max(Interv)+1),y=c(0.5,0.5),col='grey')
   text(x=par('usr')[1]+0.05*(par('usr')[2]-par('usr')[1]),
        y=par('usr')[3]+0.9*(par('usr')[4]-par('usr')[3]),
        labels='D',cex=1.5)
@@ -181,9 +180,7 @@ with(PAAIntstatsExp,{
 })
 text(x = 0,y=0.28,labels = "Trials",cex=2)
 
-# dev.off()
-
-
+dev.off()
 
 
 

@@ -46,9 +46,9 @@ Last edit date:
 #include <iostream>
 #include <fstream>
 #include "tchar.h"
-#include "M:\\Routines\\C++\\RandomNumbers\\random.h" 
+#include "..\\random.h" 
 //H for house pc, E for laptop, M for office
-#include "D:\\quinonesa\\Dropbox\C++\\json.hpp"       
+#include "..\\json.hpp"       
 // Header for reading and using JSON files see https://github.com/nlohmann/json
 
 
@@ -90,20 +90,20 @@ public:
 	//otherwise trigger an error
 	void rebirth();																								
 	// Function to reset private variables in an individual
-	void agent::getNewOptions(client newOptions[], int &idNewOptions, 
+	void getNewOptions(client newOptions[], int &idNewOptions, 
 		double &VisProbLeav, double &ResProbLeav, double &negativeRew, 
 		double &inbr, double &outbr, bool &experiment);
 	// Function to get new clients in the station, when in a natural environment
-	void agent::getExternalOptions(client newOptions[], int &idNewOptions, 
+	void getExternalOptions(client newOptions[], int &idNewOptions, 
 		double &inbr, double &outbr);		
 	// After unattended clients leave or stay, get new clients
-	void agent::getExperimentalOptions();
+	void getExperimentalOptions();
 	// Get new clients in the experimental setting
 	void ObtainReward(double &ResReward, double &VisReward);
 	// Get reward
 	double softMax(double &value1, double &value2);
 	// Calculate probability of taken a given action
-	void agent::DPupdate(double probRes, double probVis, double &VisProbLeav,
+	void DPupdate(double probRes, double probVis, double &VisProbLeav,
 		double &ResProbLeav, double &outbr, double &ResReward, 
 		double &VisReward, double &negReward, ofstream &DPdata, bool &experiment);
 	// Obtain expected values from a Dynamic programing algorithm
@@ -111,9 +111,9 @@ public:
 	// default function that maps state action pairs to indexes in the array 
 	//'values' where values are stored works for DPupdate and for 
 	//state-action pair NOT for action estimation
-	void agent::forget(double forRat);
+	void forget(double forRat);
 	// Forgetting function: stochastic change in the estimated values
-	void agent::printDPData(ofstream &DPdata, double &oubr, int &time);
+	void printDPData(ofstream &DPdata, double &oubr, int &time);
 	client cleanOptionsT[2];	// current cleaning options time = t
 	client cleanOptionsT1[2];	// future cleaning options  time = t+1
 	virtual void choice(int &StaAct1, int &StaAct2)=0;
@@ -575,9 +575,9 @@ void agent::DPupdate(double probRes, double probVis, double &VisProbLeav,
 	}
 }
 
-class FIATyp1 :public agent{			// Fully Informed Agent (FIA)			
+class FAA :public agent{			// Fully Informed Agent (FIA)			
 	public:
-	FIATyp1(double alphaI, double gammaI, double tauI, double netaI)
+	FAA(double alphaI, double gammaI, double tauI, double netaI)
 		:agent(alphaI, gammaI, tauI, netaI){
 	}
 	virtual void choice(int &StaAct1, int &StaAct2){
@@ -609,9 +609,9 @@ class FIATyp1 :public agent{			// Fully Informed Agent (FIA)
 	}
 };
 
-class PIATyp1 :public agent{				// Partially Informed Agent (PIA)	
+class PAA :public agent{				// Partially Informed Agent (PIA)	
 	public:
-	PIATyp1(double alphaI, double gammaI, double tauI, double netaI)
+	PAA(double alphaI, double gammaI, double tauI, double netaI)
 	:agent(alphaI, gammaI, tauI, netaI){
 		numEst = 3;
 	}
@@ -661,18 +661,6 @@ void draw(client trainingSet[], int rounds, double probRes, double probVis){
 	}
 }
 
-std::string itos(int j){				// turns int into string
-	std::stringstream s;
-	s << j;
-	return s.str();
-}
-
-std::string douts(double j){			// turns double into string
-	std::stringstream s;
-	s << j;
-	return s.str();
-}
-
 string create_filename(std::string filename, agent &individual,
 	nlohmann::json param, double pV, double pR) {
 	// name the file with the parameter specifications
@@ -707,7 +695,7 @@ void initializeIndFile(ofstream &indOutput, agent &learner,
 	}
 	else{
 		folder = typeid(learner).name();
-		folder.erase(0, 6).append("_");
+		folder.erase(0, 1).append("_");
 		cout << folder << '\t' << learner.getLearnPar(alphaPar) << '\t';
 		cout << learner.getLearnPar(gammaPar) << '\t';
 		cout << learner.getLearnPar(tauPar) << '\t';
@@ -829,8 +817,8 @@ int main(int argc, _TCHAR* argv[])
 						for (json::iterator itt = param["tauRange"].begin();
 							itt != param["tauRange"].end(); ++itt) {
 
-							learners[0] = new FIATyp1(alphaT, *itg, *itt, *itn);
-							learners[1] = new PIATyp1(alphaT, *itg, *itt, *itn);
+							learners[0] = new FAA(alphaT, *itg, *itt, *itn);
+							learners[1] = new PAA(alphaT, *itg, *itt, *itn);
 							ofstream printTest;
 							ofstream DPprint;
 

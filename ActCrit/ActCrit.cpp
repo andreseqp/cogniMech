@@ -40,9 +40,9 @@ Start date:
 #include <iostream>
 #include <fstream>
 #include "tchar.h"
-#include "..\\random.h"
-//H for house pc, E for laptop, M for office
-#include "..\\json.hpp"       
+#include "../utils.h"
+#include "../random.h"
+#include "../json.hpp"       
 // Header for reading and using JSON files see https://github.com/nlohmann/json
 
 
@@ -85,18 +85,18 @@ public:
 	//otherwise trigger an error
 	void rebirth(double initVal);																								
 	// Function to reset private variables in an individual
-	void agent::getNewOptions(client newOptions[], int &idNewOptions, 
+	void getNewOptions(client newOptions[], int &idNewOptions, 
 		double &VisProbLeav, double &ResProbLeav, double &negativeRew, 
 		double &inbr, double &outbr, bool &experiment);
 	// Function to get new clients in the station, when in a natural environment
-	void agent::getExternalOptions(client newOptions[], int &idNewOptions, 
+	void getExternalOptions(client newOptions[], int &idNewOptions, 
 		double &inbr, double &outbr);		
 	// After unattended clients leave or stay, get new clients
-	void agent::getExperimentalOptions();
+	void getExperimentalOptions();
 	// Get new clients in the experimental setting
 	void ObtainReward(double &ResReward, double &VisReward);
 	// Get reward
-	double agent::logist();
+	double logist();
 	int mapOptionsDP(client options[], int &choice);			
 	// default function that maps state pairs to indexes in the array 
 	//'values' where values are stored works for DPupdate and for 
@@ -416,9 +416,9 @@ void agent::choice() {
 	}
 }
 
-class FAATyp1 :public agent{			// Fully Aware Agent (FAA)			
+class FAA :public agent{			// Fully Aware Agent (FAA)			
 	public:
-	FAATyp1(double alphaI, double gammaI, double tauI, double netaI, 
+	FAA(double alphaI, double gammaI, double tauI, double netaI, 
 		double alphaThI, double initVal):agent(alphaI, gammaI, tauI, 
 			netaI, alphaThI, initVal){
 	}
@@ -439,9 +439,9 @@ class FAATyp1 :public agent{			// Fully Aware Agent (FAA)
 	}
 };
 
-class PAATyp1 :public agent{				// Partially Aware Agent (PAA)	
+class PAA :public agent{				// Partially Aware Agent (PAA)	
 	public:
-	PAATyp1(double alphaI, double gammaI, double tauI, double netaI, 
+	PAA(double alphaI, double gammaI, double tauI, double netaI, 
 		double alphaThI, double initVal):agent(alphaI, gammaI, tauI, 
 			netaI, alphaThI,initVal){
 		numEst = 3;
@@ -511,9 +511,8 @@ void initializeIndFile(ofstream &indOutput, agent &learner,
 	std::string namedir = param["folder"];
 	std::string namedirDP = param["folder"];
 	std::string folder;
-	
 	folder = typeid(learner).name();
-	folder.erase(0, 6).append("_");
+	folder.erase(0, 1).append("_");
 	cout << folder << '\t' << learner.getLearnPar(alphaPar) << '\t';
 	cout << learner.getLearnPar(gammaPar) << '\t';
 	cout << learner.getLearnPar(tauPar) << '\t';
@@ -631,9 +630,9 @@ int main(int argc, _TCHAR* argv[]){
 								double init = tmpGam*(1 - pow(1 - tmpRes - tmpVis, 2)) / (1 - tmpGam);
 
 							   // Initialize agents
-								learners[0] = new PAATyp1(alphaT, *itg, *itt,
+								learners[0] = new PAA(alphaT, *itg, *itt,
 									*itn, *italTh, init);
-								learners[1] = new FAATyp1(alphaT, *itg, *itt,
+								learners[1] = new FAA(alphaT, *itg, *itt,
 									*itn, *italTh, init);
 								// output of learning trials
 								ofstream printTest;

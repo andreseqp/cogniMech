@@ -19,7 +19,7 @@ getFilelist<-
            # list of values matching the list in 
            # listparam
            ){
-  posAgen<-c("PIA","FIA","DP")
+  posAgen<-c("PAA","FAA","DP")
   listRaw<-list.files(folder,recursive = TRUE)
   fullList<-vector("list",3)
   names(fullList)<-posAgen

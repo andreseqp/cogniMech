@@ -19,12 +19,11 @@
  
 =============================================================================================================*/
 
-#include "stdafx.h"
 #include <fstream>
 #include <sstream>
 #include <chrono>
 #include <ctime>
-#include "..\\utils.h"
+#include "utils.h"
 #pragma warning(disable : 4996)
 
 

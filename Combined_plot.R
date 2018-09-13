@@ -3,16 +3,17 @@
 
 # Load libraries and external functions -----------------------------------
 
-projDir<-"d:/quinonesa/learning_models_c++/actCrit/"
-simsDir<-"s:/quinonesa/Simulations/actCrit/InitVal1_/"
+# directory where source files are saved
+projDir<-getwd()
+alg<-"ActCrit"
+# directory where simulation output is stored
+simsDir<-paste(projDir,alg,"Fig4",sep = "/")
 
-
-source('d:/quinonesa/Dropbox/R_files/posPlots.R')
+setwd(projDir)
+source('posPlots.R')
 source(paste(projDir,"aesth_par.R",sep=""))
-source(paste(projDir,"loadData.R",sep = ""))
-source('D:/quinonesa/Dropbox/R_files/posPlots.R')
-source('D:/quinonesa/Dropbox/R_files/vioplot.R')
-source('D:/quinonesa/Dropbox/R_files/ternaryAEQP.R')
+source(paste(projDir,"loadData_",alg,".R",sep = ""))
+source('ternaryAEQP.R')
 source(paste(projDir,"data2interp.R",sep=""))
 library('plotrix')
 library('akima')
@@ -23,9 +24,9 @@ library("vcd")
 setwd(simsDir)
 
 
-(listPar<-c("AbundanceLpr"))
+(listPar<-c("abundance"))
 
-(listVal<-c(1))
+(listVal<-c(""))
 
 param<-getParam(simsDir,listparam = listPar,values = listVal)
 
@@ -46,7 +47,7 @@ FIA.stats$notProb<-round(1-FIA.stats$pR-FIA.stats$pV,1)
 # Load data for dot plot -------------------------------------------------------
 
 
-FIAlast<-rbindlist(lapply(getFilelist(simsDir,listParRuns,listValRuns)$FIA, 
+FIAlast<-rbindlist(lapply(getFilelist(simsDir,listParRuns,listValRuns)$FAA, 
                               function(x){
                                 if(as.numeric(gsub("[[:alpha:]]",
                                                    strsplit(x,"_")[[1]][7],
@@ -82,7 +83,7 @@ FIA.statsdot[,posit:=ifelse(Gamma==0&Neta==0,0,
                          ifelse(Gamma==0.8&Neta==0,0.01,
                                 ifelse(Gamma==0&Neta==1,0.02,0.03)))]
 
-png("d:/quinonesa/Dropbox/Neuchatel/Figs/Actor_critic/Fig4_panelA.png",
+png(simsDir,"Fig4_panelA.png",
     width = 700 , height = 1200)
 
 par(plt=posPlot(numplotx = 1,numploty = 1,1,1),las=1)
@@ -112,8 +113,7 @@ dev.off()
 
 # Panel B - future triplex -----------------------------------------------------
 
-png(paste("d:/quinonesa/Dropbox/Neuchatel/Figs/Actor_critic/",
-          "triplex_panelB.png",sep=""),
+png(paste(simsDir,"triplex_panelB.png",sep=""),
     width=500,height=500,units ="px")
 
 cex.lab.par<-1.8
@@ -140,8 +140,7 @@ dev.off()
 
 # Panel C - triplex negative reward --------------------------------------------
 
-png(paste("d:/quinonesa/Dropbox/Neuchatel/Figs/Actor_critic/",
-          "triplex_panelC.png",sep=""),
+png(paste(simsDir,"triplex_panelC.png",sep=""),
     width=500,height=500,units ="px")
 
 cex.lab.par<-1.8
@@ -168,8 +167,7 @@ dev.off()
 
 # ColorScale -------------------------------------------------------------------
 
-png(paste("d:/quinonesa/Dropbox/Neuchatel/Figs/Actor_critic/",
-          "triplex_panel_colorSca.png",sep=""),
+png(paste(simsDir,"triplex_panel_colorSca.png",sep=""),
     width=400,height=400,units ="px")
 
 plot.new()
