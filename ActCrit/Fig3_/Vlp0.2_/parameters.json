@@ -5,19 +5,19 @@
   "ResProb": 0.2,
   "VisProb": 0.2,
   "ResProbLeav": 0,
-  "VisProbLeav": 0,
+  "VisProbLeav": 0.2,
   "negativeRew": -0.5,
   "experiment": false,
   "inbr": 0,
   "outbr": 0,
-  "trainingRep": 30,
+  "trainingRep": 100,
   "forRat": 0,
   "alphaT": 0.01,
   "printGen": 100,
   "seed": 1,
   "gammaRange": [0, 0.8],
-  "tauRange": 1,
   "netaRange": [0, 1],
   "alphaThRange": 0.01,
-  "folder": "/Fig3/Vlp0_/"
+  "alphaThNchRange": 1,
+  "folder": "../Fig3_/Vlp0.2_/Simul/"
 }

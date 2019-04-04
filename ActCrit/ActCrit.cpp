@@ -57,12 +57,12 @@ using json = nlohmann::json;
 
 enum client { resident, visitor, absence };																		
 // clients can be resident, visitors, or be absent
-enum learPar { alphaPar, gammaPar, tauPar, netaPar , alphathPar};
+enum learPar { alphaPar, gammaPar, netaPar , alphathPar};
 
 class agent													// Learning agent
 {
 public:
-	agent(double alphaI, double gammaI, double tauI, bool netaI, 
+	agent(double alphaI, double gammaI, bool netaI, 
 		double alphathI, double initVal);
 	// constructor providing values for the learning parameters
 	~agent();																
@@ -124,8 +124,6 @@ protected:
 	double alpha;// speed of learning for estimated values
 	double alphath; // speed of learning for policy parameter
 	double gamma;// importance of future rewards
-	double tau;	// level of explorative behaviour. 
-				//The higher, the less important values is when making decisions
 	bool neta;	
 	// Weight of the negative reward in the total reward obtained by an agent
 	double currentReward; // reward given by current state action pair
@@ -137,7 +135,7 @@ protected:
 // Members of agent class
 
 agent::agent(double alphaI = 0.01, double gammaI = 0.5, 
-	double tauI = 10, bool netaI = 0, double alphathI = 0.01,
+	bool netaI = 0, double alphathI = 0.01,
 	double initVal = 0){
 // parameterized constructor with defaults
 	theta[0] = 0, theta[1] = 0;
@@ -149,7 +147,7 @@ agent::agent(double alphaI = 0.01, double gammaI = 0.5,
 	values[5] -= 1;
 	// Value of absence starts with reward of 0
 	piV = logist();
-	alpha = alphaI, gamma = gammaI, tau = tauI, alphath = alphathI;
+	alpha = alphaI, gamma = gammaI, alphath = alphathI;
 	neta = netaI;
 	cleanOptionsT[0] = absence, cleanOptionsT[1] = absence, choiceT = 0;
 	cleanOptionsT1[0] = absence, cleanOptionsT1[1] = absence, choiceT1 = 0;
@@ -190,8 +188,6 @@ double agent::getLearnPar(learPar parameter)
 		break;
 	case gammaPar:
 		return(gamma);
-		break;
-	case tauPar:return(tau);
 		break;
 	case netaPar:return(neta);
 		break;
@@ -349,8 +345,8 @@ void agent::printIndData(ofstream &learnSeries, int &seed, double &outbr,
 	double pV, double pR) {
 	learnSeries << seed << '\t' << age << '\t';
 	//cout << seed << '\t' << age << '\t';
-	learnSeries << alpha << '\t' << gamma << '\t' << tau << '\t';
-	learnSeries << neta << '\t' << alphath << '\t' << pV << '\t';
+	learnSeries << alpha << '\t' << gamma << '\t' << neta << '\t';
+	learnSeries <<  alphath << '\t' << pV << '\t';
 	learnSeries << pR << '\t' << theta[0] << '\t';
 	learnSeries << theta[1] << '\t' << outbr << '\t';
 	learnSeries << cleanOptionsT[0] << '\t' << cleanOptionsT[1] << '\t';
@@ -418,8 +414,8 @@ void agent::choice() {
 
 class FAA :public agent{			// Fully Aware Agent (FAA)			
 	public:
-	FAA(double alphaI, double gammaI, double tauI, double netaI, 
-		double alphaThI, double initVal):agent(alphaI, gammaI, tauI, 
+	FAA(double alphaI, double gammaI, double netaI, 
+		double alphaThI, double initVal):agent(alphaI, gammaI, 
 			netaI, alphaThI, initVal){
 	}
 	virtual int mapOptions(client options[], int &choice){
@@ -441,8 +437,8 @@ class FAA :public agent{			// Fully Aware Agent (FAA)
 
 class PAA :public agent{				// Partially Aware Agent (PAA)	
 	public:
-	PAA(double alphaI, double gammaI, double tauI, double netaI, 
-		double alphaThI, double initVal):agent(alphaI, gammaI, tauI, 
+	PAA(double alphaI, double gammaI, double netaI, 
+		double alphaThI, double initVal):agent(alphaI, gammaI, 
 			netaI, alphaThI,initVal){
 		numEst = 3;
 		values[3] -= 1;
@@ -492,8 +488,6 @@ string create_filename(std::string filename, agent &individual,
 	filename.append(douts(individual.getLearnPar(alphaPar)));
 	filename.append("_gamma");
 	filename.append(douts(individual.getLearnPar(gammaPar)));
-	filename.append("_tau");
-	filename.append(douts(individual.getLearnPar(tauPar)));
 	filename.append("_neta");
 	filename.append(douts(individual.getLearnPar(netaPar)));
 	filename.append("_pV");
@@ -512,10 +506,9 @@ void initializeIndFile(ofstream &indOutput, agent &learner,
 	std::string namedirDP = param["folder"];
 	std::string folder;
 	folder = typeid(learner).name();
-	folder.erase(0, 1).append("_");
+	folder.erase(0, 6).append("_");
 	cout << folder << '\t' << learner.getLearnPar(alphaPar) << '\t';
 	cout << learner.getLearnPar(gammaPar) << '\t';
-	cout << learner.getLearnPar(tauPar) << '\t';
 	cout << learner.getLearnPar(netaPar) << '\t'; 
 	cout << learner.getLearnPar(alphathPar) << endl;
 	namedir.append(folder);
@@ -523,7 +516,7 @@ void initializeIndFile(ofstream &indOutput, agent &learner,
 	indOutput.open(IndFile.c_str());
 	
 	indOutput << "Training" << '\t' << "Age" << '\t' << "Alpha" << '\t';
-	indOutput << "Gamma" << '\t' << "Tau" << '\t' << "Neta" << '\t';
+	indOutput << "Gamma" << '\t' <<  "Neta" << '\t';
 	indOutput << "AlphaTh" << '\t' << "pV" << '\t' << "pR" << '\t';
 	indOutput << "ThetaV" << '\t' << "ThetaR" << '\t';
 	indOutput << "Outbr" << '\t' << "Client1" << '\t' << "Client2" << '\t';
@@ -571,7 +564,6 @@ int main(int argc, _TCHAR* argv[]){
 	param["forRat"]       = 0.0;
 	param["alphThRange"]  = { 0 };
 	param["gammaRange"]   = {  0.8 };
-	param["tauRange"]     = { 0.6667 };
 	param["netaRange"]    = { 0 };
 	param["alphaThRange"] = { 0.01 };
 	param["folder"]       = "S:/quinonesa/Simulations/actCrit/test_/";
@@ -623,19 +615,16 @@ int main(int argc, _TCHAR* argv[]){
 						itn != param["netaRange"].end(); ++itn) {
 						for (json::iterator itg = param["gammaRange"].begin();
 							itg != param["gammaRange"].end(); ++itg) {
-							for (json::iterator itt = param["tauRange"].begin();
-								itt != param["tauRange"].end(); ++itt) {
-								double tmpGam  = *itg;
-								// set initial value according to the environemntal parameters
-								double init = tmpGam*(1 - pow(1 - tmpRes - tmpVis, 2)) / (1 - tmpGam);
-
-							   // Initialize agents
-								learners[0] = new PAA(alphaT, *itg, *itt,
-									*itn, *italTh, init);
-								learners[1] = new FAA(alphaT, *itg, *itt,
-									*itn, *italTh, init);
-								// output of learning trials
-								ofstream printTest;
+							double tmpGam  = *itg;
+							// set initial value according to the environemntal parameters
+							double init = tmpGam*(1 - pow(1 - tmpRes - tmpVis, 2)) / (1 - tmpGam);
+							// Initialize agents
+							learners[0] = new PAA(alphaT, *itg,
+								*itn, *italTh, init);
+							learners[1] = new FAA(alphaT, *itg,
+								*itn, *italTh, init);
+							// output of learning trials
+							ofstream printTest;
 // Loop through types of agents
 for (int k = 0; k < numlearn; ++k) {
     initializeIndFile(printTest, *learners[k],
@@ -668,7 +657,7 @@ for (int k = 0; k < numlearn; ++k) {
 	printTest.close();
 	delete learners[k];
 }
-							}
+							
 						}
 					}
 				}

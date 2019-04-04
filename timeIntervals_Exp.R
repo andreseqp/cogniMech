@@ -1,22 +1,26 @@
 # ----Comparison of time intervals for experimental and natural setting------------------------------------------#
 #                         Figure 2
 
-# directory where source files are saved
-projDir<-getwd()
+# Directories --------------------------------------------------------------
+# Requirements of here:
+# install.packages("devtools")
+# devtools::install_github("r-lib/rprojroot")
+# devtools::install_github("krlmlr/here")
+library(here)
+library('plotrix')
+
 alg<-"ActCrit"
 # directory where simulation output is stored
-simsDir<-paste(projDir,alg,sep = "/")
+
 
 # libraries ---------------------------------------------------------------------------------------
-setwd(projDir)
 # external file to locate plots in the plotting region
-source('posPlots.R')
+source(paste(here(),'posPlots.R',sep="/"))
 
 # aesthetic parameters 
-source("aesth_par.R")
+source(paste(here(),"aesth_par.R",sep="/"))
 # funtions to load data
-source(paste(projDir,"loadData_",alg,".R",sep = ""))
-library('plotrix')
+source(paste(here(),"/loadData_",alg,".R",sep = ""))
 
 # Load Data ---------------------------------------------------------------------------------------
 
@@ -32,12 +36,12 @@ setwd(simsDir)
 # natural setting
 FAAtimeIntEcol<-do.call(
   rbind,lapply(
-    getFilelist(simsDir,listPar[1],listVal[1])$FAA,
+    getFilelist(here(alg),listPar[1],listVal[1])$FAA,
     file2timeInter,interV=1001))
 #experimental setting
 FAAtimeIntExp<-do.call(
   rbind,lapply(
-    getFilelist(simsDir,listPar[2],listVal[2])$FAA,
+    getFilelist(here(alg),listPar[2],listVal[2])$FAA,
     file2timeInter,interV=1001))
 
 
@@ -45,13 +49,13 @@ FAAtimeIntExp<-do.call(
 # natural setting
 PAAtimeIntEcol<-do.call(
   rbind,lapply(
-    getFilelist(simsDir,listPar[1],listVal[1])$PAA,
+    getFilelist(here(alg),listPar[1],listVal[1])$PAA,
     file2timeInter,interV=1001))
 
 #experimental setting
 PAAtimeIntExp<-do.call(
   rbind,lapply(
-    getFilelist(simsDir,listPar[2],listVal[2])$PAA,
+    getFilelist(here(alg),listPar[2],listVal[2])$PAA,
     file2timeInter,interV=1001))
 
 # Calculate statistics on the interval data ------------------------------------
@@ -97,7 +101,7 @@ PAAIntstatsExp[,posit:=ifelse(Gamma==0&Neta==0,0,
 
 # Plot the dynamics of VR choice -----------------------------------------------------------
 
-png(paste(simsDir,"Fig_2.png",sep = ""),
+png(paste(simsDir,"/Fig_2.png",sep = ""),
 width = 1200,height = 800)
 
 par(plt=posPlot(numplotx = 2,numploty = 2,idplotx = 1,idploty = 2),

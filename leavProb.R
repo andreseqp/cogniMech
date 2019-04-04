@@ -2,26 +2,27 @@
 #                         Figure 3
 
 # Directories --------------------------------------------------------------
-
+# Requirements of here:
+# install.packages("devtools")
+# devtools::install_github("r-lib/rprojroot")
+# devtools::install_github("krlmlr/here")
+library(here)
+library('plotrix')
 # directory where source files are saved
-projDir<-getwd()
 alg<-"ActCrit"
 # directory where simulation output is stored
-simsDir<-paste(projDir,alg,sep = "/")
+simsDir<-paste(here(),alg,sep = "/")
 
 
 # libraries ----------------------------------------------------------------
 setwd(projDir)
-source(paste(projDir,'posPlots.R'))
-source(paste(projDir,"aesth_par.R",sep=""))
-source(paste(projDir,"loadData_",alg,".R",sep = ""))
-library('plotrix')
-# library('lme4')
+source(paste(here(),'posPlots.R',sep="/"))
+source(paste(here(),"aesth_par.R",sep="/"))
+source(paste(here(),"/loadData_",alg,".R",sep = ""))
 
 
 # Load data ------------------------------------------------------------
 
-setwd(simsDir)
 # Define data to be loaded 
 
 (listPar<-rep("Vlp",6))
@@ -29,7 +30,7 @@ setwd(simsDir)
 (listVal<-seq(0,1,length=6))
 
 FAAlastQuart<-do.call(rbind,lapply(
-  getFilelist(simsDir,listPar,listVal)$FAA,file2lastProp,0.75,'Vlp'))
+  getFilelist(here(alg),listPar,listVal)$FAA,file2lastProp,0.75,'Vlp'))
 
 FAA.stats<-FAAlastQuart[,.(meanProb=mean(Prob.RV.V),
                               upIQR=fivenum(Prob.RV.V)[4],
