@@ -24,7 +24,6 @@ source(paste(here(),"/loadData_",alg,".R",sep = ""))
 
 # Load Data ---------------------------------------------------------------------------------------
 
-setwd(simsDir)
 
 # Define data to be loaded 
 

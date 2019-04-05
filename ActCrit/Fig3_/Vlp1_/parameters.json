@@ -18,6 +18,5 @@
   "gammaRange": [0, 0.8],
   "netaRange": [0, 1],
   "alphaThRange": 0.01,
-  "alphaThNchRange": 1,
   "folder": "../Fig3_/Vlp1_/Simul/"
 }

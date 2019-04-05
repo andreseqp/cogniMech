@@ -2,38 +2,34 @@
 # Include in one figure tripleces and dot plots with error bars 
 
 # Load libraries and external functions -----------------------------------
-
+library(here)
 # directory where source files are saved
-projDir<-getwd()
-alg<-"ActCrit"
-# directory where simulation output is stored
-simsDir<-paste(projDir,alg,"Fig4",sep = "/")
 
-setwd(projDir)
+alg<-"ActCrit"
+
+
 source('posPlots.R')
-source(paste(projDir,"aesth_par.R",sep=""))
-source(paste(projDir,"loadData_",alg,".R",sep = ""))
-source('ternaryAEQP.R')
-source(paste(projDir,"data2interp.R",sep=""))
+source(here("aesth_par.R"))
+source(here(paste("loadData_",alg,".R",sep = "")))
+source(here('ternaryAEQP.R'))
+source(here("data2interp.R"))
 library('plotrix')
 library('akima')
 library("vcd")
 
 # Load Data for interpolations --------------------------------------------------------------------------------------
 
-setwd(simsDir)
-
 
 (listPar<-c("abundance"))
 
 (listVal<-c(""))
 
-param<-getParam(simsDir,listparam = listPar,values = listVal)
+param<-getParam(here(alg,"Fig4_"),listparam = listPar,values = listVal)
 
 
 
 FIAlastQuarData<-do.call(rbind,lapply(
-  getFilelist(simsDir,listPar,listVal)$FIA,file2lastProp,0.75))
+  getFilelist(here(alg,"Fig4_"),listPar,listVal)$FAA,file2lastProp,0.9))
 
 
 FIA.stats<-FIAlastQuarData[,.(meanProb=mean(Prob.RV.V),
@@ -47,7 +43,8 @@ FIA.stats$notProb<-round(1-FIA.stats$pR-FIA.stats$pV,1)
 # Load data for dot plot -------------------------------------------------------
 
 
-FIAlast<-rbindlist(lapply(getFilelist(simsDir,listParRuns,listValRuns)$FAA, 
+FIAlast<-rbindlist(lapply(getFilelist(here(alg,"Fig4_"),
+                                      listPar,listVal)$FAA, 
                               function(x){
                                 if(as.numeric(gsub("[[:alpha:]]",
                                                    strsplit(x,"_")[[1]][7],
@@ -87,7 +84,7 @@ png(simsDir,"Fig4_panelA.png",
     width = 700 , height = 1200)
 
 par(plt=posPlot(numplotx = 1,numploty = 1,1,1),las=1)
-with(FIA.stats,{
+with(FIA.statsdot,{
   plotCI(x = (1-pA)+posit,
          y = meanProb,ui = upIQR
          ,li = lowIQR,

@@ -31,7 +31,7 @@ getFilelist<-
       if(is.null(listparam)){
         # if there is no list, use all the data
         paramList<-listRaw
-  }
+      }
     else{
       # if there is list, filter the data
       #regExpList<-paste0(listparam,values,"_",sep="")
@@ -48,8 +48,10 @@ getFilelist<-
         listAgent<-grep(agent,paramList,value = TRUE)
         fullList[[agent]]<-listAgent
       }
+      fullList<-lapply(fullList,FUN=function(x){
+        paste(folder,x,sep ="/")})
       return(fullList)
-    }
+  }
 }
 
 
@@ -75,7 +77,6 @@ loadRawData<-function(folder,agent,listparam,values){
 # Load the JSON files with parameter values  -----------------------------------
 
 getParam<-function(folder,agent,listparam=NULL,values=NULL){
-  setwd(folder)
   irrelPar<-c("gamma","neta","pR","pV")
   listRaw<-list.files(folder,recursive = TRUE)
   jsonsList<-grep(".json",listRaw,value = TRUE)
@@ -100,6 +101,8 @@ getParam<-function(folder,agent,listparam=NULL,values=NULL){
       }
     }
   }
+  jsonsList<-lapply(jsonsList,FUN=function(x){
+    paste(folder,x,sep ="/")})
   jsons<-do.call(list,lapply(jsonsList,fromJSON))
   return(jsons)
 }

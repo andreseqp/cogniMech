@@ -15,7 +15,7 @@ simsDir<-paste(here(),alg,sep = "/")
 
 
 # libraries ----------------------------------------------------------------
-setwd(projDir)
+
 source(paste(here(),'posPlots.R',sep="/"))
 source(paste(here(),"aesth_par.R",sep="/"))
 source(paste(here(),"/loadData_",alg,".R",sep = ""))
