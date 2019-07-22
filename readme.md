@@ -1,10 +1,10 @@
-Modeling cognitive mechanisms of learning in mutualistic cleaner fish
+# Modeling cognitive mechanisms of learning in mutualistic cleaner fish
 
 This repository provides the code to simulate the learning models. The model is
 coded in c++ language. Visualization of the output is done in R. In this readme 
 we describe how to run the simulations and how to plot their outcome. 
 
-Model simulations
+## Model simulations
 
 As stated before, code for the simulation model is written in C++ language. 
 The files contained at the base folder: random.cpp, utils.cpp, utils.h, random.h
@@ -49,7 +49,7 @@ SupFig4
 .\Sarsa.exe SupFig4\abundance_\parameters.json
 
 
-Visualization
+## Visualization
 Figures can be produced by running the r files found in the base folder. 
 Figure 2 of the paper is produce by running the file timeIntervals_Exp.R. 
 Figure 3 can produced by running leavProb.R. By changing the variable "alg" from 
