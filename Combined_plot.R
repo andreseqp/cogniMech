@@ -80,7 +80,7 @@ FIA.statsdot[,posit:=ifelse(Gamma==0&Neta==0,0,
                          ifelse(Gamma==0.8&Neta==0,0.01,
                                 ifelse(Gamma==0&Neta==1,0.02,0.03)))]
 
-png(simsDir,"Fig4_panelA.png",
+png(here(alg,"Fig4_panelA.png"),
     width = 700 , height = 1200)
 
 par(plt=posPlot(numplotx = 1,numploty = 1,1,1),las=1)
@@ -102,15 +102,15 @@ with(FIA.statsdot,{
 })
 
 legend(x=0.6,y=0.65,
-       legend=c("neg. reward + future", "future",
-                "neg. reward","no neg. reward + no future"),
+       legend=c("penalty + future reward", "future reward",
+                "penalty","no penalty + no future reward"),
        col=colboxes,pch=15,cex=1.5,ncol=1)
 
 dev.off()
 
 # Panel B - future triplex -----------------------------------------------------
 
-png(paste(simsDir,"triplex_panelB.png",sep=""),
+png(here(alg,"triplex_panelB.png"),
     width=500,height=500,units ="px")
 
 cex.lab.par<-1.8
@@ -137,7 +137,7 @@ dev.off()
 
 # Panel C - triplex negative reward --------------------------------------------
 
-png(paste(simsDir,"triplex_panelC.png",sep=""),
+png(here(alg,"triplex_panelC.png"),
     width=500,height=500,units ="px")
 
 cex.lab.par<-1.8
@@ -164,7 +164,7 @@ dev.off()
 
 # ColorScale -------------------------------------------------------------------
 
-png(paste(simsDir,"triplex_panel_colorSca.png",sep=""),
+png(here(alg,"triplex_panel_colorSca.png"),
     width=400,height=400,units ="px")
 
 plot.new()

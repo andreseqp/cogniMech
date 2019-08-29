@@ -138,8 +138,8 @@ with(PAAIntstatsEcol,{
        labels='B',cex=1.5)
 })
 legend('topright',
-       legend=c("neg. reward + future", "future",
-                "neg. reward","no neg. reward + no future"),
+       legend=c("penalty + future reward", "future reward",
+                "penalty","no penalty + no future reward"),
        col=colboxes,pch=15,cex=1.5,ncol=1)
 
 

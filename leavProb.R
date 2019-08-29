@@ -7,11 +7,11 @@
 # devtools::install_github("r-lib/rprojroot")
 # devtools::install_github("krlmlr/here")
 library(here)
+# project directory
 library('plotrix')
 # directory where source files are saved
 alg<-"ActCrit"
-# directory where simulation output is stored
-simsDir<-paste(here(),alg,sep = "/")
+
 
 
 # libraries ----------------------------------------------------------------
@@ -44,7 +44,7 @@ FAA.stats[,posit:=ifelse(Gamma==0&Neta==0,0,
                          ifelse(Gamma==0.8&Neta==0,0.01,
                                 ifelse(Gamma==0&Neta==1,0.02,0.03)))]
 
-png(paste(simsDir,"/Fig3/Fig_3.png",sep = ""),
+png(here(alg,"/Fig_3.png"),
     width = 1200,height = 800)
 
 par(plt=posPlot(),las=1)
@@ -63,8 +63,8 @@ with(FAA.stats,{
 })
 
 legend('topleft',
-       legend=c("neg. reward + future", "future",
-                "neg. reward","no neg. reward + no future"),
+       c("penalty + future reward", "future reward",
+         "penalty","no penalty + no future reward"),
        col=colboxes,pch=15,cex=1.5,ncol=1)
 
 dev.off()
