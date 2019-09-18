@@ -69,10 +69,10 @@ FIA.statsdot<-FIAlast[,.(meanProb=mean(Prob.RV.V),
 # Data interpolations ---------------------------------------------------------
 
 FIAinterpData<-AbundData2interp(FIAlastQuarData[Neta==0&Gamma==0.8],
-                                Var2int = "Prob.RV.V")
+                                Var2int = "Prob.RV.V",npoints = 1000)
 
 FIAinterpData.Neg<-AbundData2interp(FIAlastQuarData[Neta==1&Gamma==0],
-                                    Var2int = "Prob.RV.V")
+                                    Var2int = "Prob.RV.V",npoints = 1000)
 
 # Panel a ---------------------------------------------------------------------
 
@@ -82,6 +82,8 @@ FIA.statsdot[,posit:=ifelse(Gamma==0&Neta==0,0,
 
 png(here(alg,"Fig4_panelA.png"),
     width = 700 , height = 1200)
+
+pdf(here(alg,"Fig4_panelA.pdf"),height = 12,width = 7)
 
 par(plt=posPlot(numplotx = 1,numploty = 1,1,1),las=1)
 with(FIA.statsdot,{
@@ -94,8 +96,8 @@ with(FIA.statsdot,{
          pch=16,xlab="",ylab="",
          sfrac=0.008,yaxt='s',
          cex.axis=1.3,cex=2,cex.lab=3)
-  mtext('Proportion of visitors chosen over residents',2,line = 4, cex=3,las=0)
-  mtext('Overall client abundance',1,line = 5,las=1,cex=4)
+  mtext('Proportion of visitors chosen over residents',2,line = 3, cex=3,las=0)
+  mtext('Overall client abundance',1,line = 5,las=1,cex=3)
   # text(x=par('usr')[1]+0.05*(par('usr')[2]-par('usr')[1]),
   #      y=par('usr')[3]+0.95*(par('usr')[4]-par('usr')[3]),
   #      labels='A',cex=2)
@@ -104,7 +106,7 @@ with(FIA.statsdot,{
 legend(x=0.6,y=0.65,
        legend=c("penalty + future reward", "future reward",
                 "penalty","no penalty + no future reward"),
-       col=colboxes,pch=15,cex=1.5,ncol=1)
+       col=colboxes,pch=15,cex=1,ncol=1)
 
 dev.off()
 
@@ -113,11 +115,12 @@ dev.off()
 png(here(alg,"triplex_panelB.png"),
     width=500,height=500,units ="px")
 
-cex.lab.par<-1.8
+pdf(here(alg,"triplex_panelB.pdf"),height = 7,width = 7)
+
+cex.lab.par<-1.5
 
 colorbreaksMeans<-seq(0.45,1,length=100)
 
-plot.new()
 with(FIAinterpData,{
   ternaryplotAEQP(rbind(cbind(resProb,visProb,notProb),
            cbind(FIA.statsdot[Gamma==0.8&Neta==0]$pR,
@@ -140,11 +143,10 @@ dev.off()
 png(here(alg,"triplex_panelC.png"),
     width=500,height=500,units ="px")
 
-cex.lab.par<-1.8
+pdf(here(alg,"triplex_panelC.pdf"),height = 7,width = 7)
 
 colorbreaksMeans<-seq(0.45,1,length=100)
 
-plot.new()
 with(FIAinterpData.Neg,{
   ternaryplotAEQP(rbind(cbind(resProb,visProb,notProb),
                         cbind(FIA.statsdot[Gamma==0&Neta==1]$pR,
@@ -166,6 +168,8 @@ dev.off()
 
 png(here(alg,"triplex_panel_colorSca.png"),
     width=400,height=400,units ="px")
+
+pdf(here(alg,"triplex_panel_colorSca.png"),width = 4,height = 4)
 
 plot.new()
 with(rbind(FIAinterpData,FIAinterpData.Neg),{

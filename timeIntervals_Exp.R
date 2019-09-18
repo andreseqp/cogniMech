@@ -63,23 +63,23 @@ PAAtimeIntExp<-do.call(
 FAAIntstatsEcol<-FAAtimeIntEcol[Gamma!=0.5,.(meanProb=mean(Prob.RV.V),
                            upIQR=fivenum(Prob.RV.V)[4],
                            lowIQR=fivenum(Prob.RV.V)[2])
-                        ,by=.(Interv,Neta,Outbr,Tau,Gamma)]
+                        ,by=.(Interv,Neta,Outbr,Gamma)]
 
 FAAIntstatsExp<-FAAtimeIntExp[Gamma!=0.5,.(meanProb=mean(Prob.RV.V),
                                              upIQR=fivenum(Prob.RV.V)[4],
                                              lowIQR=fivenum(Prob.RV.V)[2])
-                                ,by=.(Interv,Neta,Outbr,Tau,Gamma)]
+                                ,by=.(Interv,Neta,Outbr,Gamma)]
 
 PAAIntstatsEcol<-PAAtimeIntEcol[Gamma!=0.5,.(meanProb=mean(Prob.RV.V),
                            upIQR=fivenum(Prob.RV.V)[4],
                            lowIQR=fivenum(Prob.RV.V)[2])
-                        ,by=.(Interv,Neta,Outbr,Tau,Gamma)]
+                        ,by=.(Interv,Neta,Outbr,Gamma)]
 
 
 PAAIntstatsExp<-PAAtimeIntExp[Gamma!=0.5,.(meanProb=mean(Prob.RV.V),
                                              upIQR=fivenum(Prob.RV.V)[4],
                                              lowIQR=fivenum(Prob.RV.V)[2])
-                                ,by=.(Interv,Neta,Outbr,Tau,Gamma)]
+                                ,by=.(Interv,Neta,Outbr,Gamma)]
 
 # Compute position variable that allows to see the "treatments"
 
@@ -102,6 +102,8 @@ PAAIntstatsExp[,posit:=ifelse(Gamma==0&Neta==0,0,
 
 png(paste(simsDir,"/Fig_2.png",sep = ""),
 width = 1200,height = 800)
+
+pdf(here("Fig_2.pdf"),width = 12,height = 8)
 
 par(plt=posPlot(numplotx = 2,numploty = 2,idplotx = 1,idploty = 2),
     yaxt='s',las=1)
@@ -140,7 +142,7 @@ with(PAAIntstatsEcol,{
 legend('topright',
        legend=c("penalty + future reward", "future reward",
                 "penalty","no penalty + no future reward"),
-       col=colboxes,pch=15,cex=1.5,ncol=1)
+       col=colboxes,pch=15,cex=1,ncol=1)
 
 
 par(plt=posPlot(numplotx = 2,numploty = 2,idplotx = 1,idploty = 1),
@@ -160,7 +162,7 @@ with(FAAIntstatsExp,{
   axis(1,labels = (Interv+1)*1000,at=Interv+1)
   # lines(x=c(0,max(Interv)),y=c(0.8,0.8),col='grey')
 })
-text(x= -1,y=1.1,labels = "Proportion of visitors \n chosen over residents",
+text(x= -2,y=1.1,labels = "Proportion of visitors \n chosen over residents",
      srt=90,cex=1.8)
 
 
@@ -181,7 +183,7 @@ with(PAAIntstatsExp,{
        labels='D',cex=1.5)
   axis(1,labels = (Interv+1)*1000,at=Interv+1)
 })
-text(x = 0,y=0.28,labels = "Trials",cex=2)
+text(x = -0.1,y=0.22,labels = "Trials",cex=2)
 
 dev.off()
 
