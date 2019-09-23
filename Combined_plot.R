@@ -69,10 +69,10 @@ FIA.statsdot<-FIAlast[,.(meanProb=mean(Prob.RV.V),
 # Data interpolations ---------------------------------------------------------
 
 FIAinterpData<-AbundData2interp(FIAlastQuarData[Neta==0&Gamma==0.8],
-                                Var2int = "Prob.RV.V",npoints = 1000)
+                                Var2int = "Prob.RV.V",npoints = 500)
 
 FIAinterpData.Neg<-AbundData2interp(FIAlastQuarData[Neta==1&Gamma==0],
-                                    Var2int = "Prob.RV.V",npoints = 1000)
+                                    Var2int = "Prob.RV.V",npoints = 500)
 
 # Panel a ---------------------------------------------------------------------
 
