@@ -44,10 +44,10 @@ FAA.stats[,posit:=ifelse(Gamma==0&Neta==0,0,
                          ifelse(Gamma==0.8&Neta==0,0.01,
                                 ifelse(Gamma==0&Neta==1,0.02,0.03)))]
 
-png(here(alg,"/Fig_3.png"),
-    width = 1200,height = 800)
+# png(here(alg,"/Fig_3.png"),
+#     width = 1200,height = 800)
 
-pdf(here("Fig_3.pdf"),width = 12,height = 8)
+pdf(here("Fig_3.pdf"),width = 12,height = 8,useDingbats = FALSE)
 
 par(plt=posPlot(),las=1)
 with(FAA.stats,{

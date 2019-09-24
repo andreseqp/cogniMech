@@ -169,7 +169,7 @@ dev.off()
 png(here(alg,"triplex_panel_colorSca.png"),
     width=400,height=400,units ="px")
 
-pdf(here(alg,"triplex_panel_colorSca.png"),width = 4,height = 4)
+pdf(here(alg,"triplex_panel_colorSca.pdf"),width = 4,height = 4,useDingbats = FALSE)
 
 plot.new()
 with(rbind(FIAinterpData,FIAinterpData.Neg),{
@@ -178,5 +178,5 @@ with(rbind(FIAinterpData,FIAinterpData.Neg),{
                  max = max(colorbreaksMeans),nticks = 3,
                  title = "Probability  of Visitors \n chosen over residents",
                  cex.tit = 1.2,
-                 numplotx = 2,numploty = 2,idplotx =2,idploty = 1)})
+                 numplotx = 2,numploty = 2,idplotx =1,idploty = 1)})
 dev.off()

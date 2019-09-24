@@ -103,7 +103,7 @@ PAAIntstatsExp[,posit:=ifelse(Gamma==0&Neta==0,0,
 png(paste(simsDir,"/Fig_2.png",sep = ""),
 width = 1200,height = 800)
 
-pdf(here("Fig_2.pdf"),width = 12,height = 8)
+pdf(here("Fig_2.pdf"),width = 12,height = 8,useDingbats = FALSE)
 
 par(plt=posPlot(numplotx = 2,numploty = 2,idplotx = 1,idploty = 2),
     yaxt='s',las=1)
